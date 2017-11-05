@@ -1,6 +1,13 @@
 # {{ ansible_managed }}
 # zsh version: {{ zsh_version }}
 # antigen version: {{ zsh_antigen_installed_version }}
+#
+
+# zmodload zsh/zprof
+
+# http://jb-blog.readthedocs.io/en/latest/posts/0032-debugging-zsh-startup-time.html
+rm ~/.antigen/.zcompdump
+
 
 export TERM="{{ zsh_term }}"
 export EDITOR="{{ zsh_editor }}"
