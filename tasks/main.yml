@@ -15,4 +15,6 @@
   become_user: "{{ zsh_user }}"
   changed_when: false
   failed_when: false
-  #  tags: always
+  tags: always
+  poll: 10
+  async: 45

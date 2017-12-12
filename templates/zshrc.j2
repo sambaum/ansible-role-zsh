@@ -6,8 +6,7 @@
 # zmodload zsh/zprof
 
 # http://jb-blog.readthedocs.io/en/latest/posts/0032-debugging-zsh-startup-time.html
-rm ~/.antigen/.zcompdump
-
+[ -e ~/.antigen/.zcompdump ] && rm ~/.antigen/.zcompdump
 
 export TERM="{{ zsh_term }}"
 export EDITOR="{{ zsh_editor }}"
