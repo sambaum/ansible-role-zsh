@@ -129,11 +129,11 @@ zsh_command_time_echo: ""
 zsh_powerlevel9k_left_prompt:
   - context
   - dir
+  - vcs
 
 zsh_powerlevel9k_right_prompt:
   - status
   - background_jobs
-  - vcs
   - command_execution_time
   - time
 
@@ -144,8 +144,8 @@ zsh_powerlevel_custom_elements:
     foreground: "000"
 
 zsh_powerlevel9k_hide_host_on_local: yes
-zsh_powerlevel9k_always_show_context: no # hide hostname and username from prompt on local machine
-zsh_powerlevel9k_always_show_user: no # hide username from prompt on local machine
+zsh_powerlevel9k_always_show_context: yes # hide hostname and username from prompt on local machine
+zsh_powerlevel9k_always_show_user: yes # hide username from prompt on local machine
 zsh_powerlevel9k_prompt_on_newline: no
 zsh_powerlevel9k_shorten_dir_length: 3
 zsh_powerlevel9k_status_verbose: 0
