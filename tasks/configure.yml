@@ -38,7 +38,7 @@
 
 - name: Write .zshrc config
   template:
-    src: zshrc.j2
+    src: "{{ zsh_template_zshrc }}" 
     dest: "{{ zsh_user_config }}"
     owner: "{{ zsh_user }}"
     group: "{{ zsh_user_group }}"
