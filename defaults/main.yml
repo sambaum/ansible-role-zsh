@@ -8,6 +8,7 @@ zsh_share_history: no
 zsh_update_interval: 30 # set 0 for disable autoupdates
 zsh_editor: vim
 zsh_term: xterm-256color
+zsh_mc_solarized_skin: no
 
 zsh_path:
   - /usr/local/sbin
@@ -22,7 +23,7 @@ zsh_path:
 fzf_widgets: ytet5uy4/fzf-widgets
 
 zsh_antigen_version: master
-zsh_fzf_version: 0.17.3
+zsh_fzf_version: 0.17.4
 
 zsh_antigen_bundles:
   - { name: command-not-found, when: "{{ ansible_os_family != 'Darwin' }}" } # too slow on OSX
