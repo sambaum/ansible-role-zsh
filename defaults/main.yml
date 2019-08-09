@@ -174,3 +174,7 @@ zsh_template_zshrc: zshrc.j2
 
 # individual lines
 zshrc_individual_lines: []
+
+# byobu
+byobu_install: false
+byobu_launch_by_default: false

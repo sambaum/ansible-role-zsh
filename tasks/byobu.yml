@@ -1,0 +1,25 @@
+---
+
+- name: Install byobu
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - byobu
+
+- name: configure byobu launch-by-default
+  become: yes
+  become_user: "{{ zsh_user }}"
+  debconf:
+    name: byobu
+    question: byobu/launch-by-default
+    value: true
+    vtype: boolean
+  when: byobu_launch_by_default
+
+- name: configure tmux.conf
+  become: yes
+  become_user: "{{ zsh_user }}"
+  template:
+    src: tmux.conf.j2
+    dest: "~/.byobu/.tmux.conf"

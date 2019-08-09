@@ -9,6 +9,10 @@
 - include: post-install.yml
   tags: [ zsh, install, post_install ]
 
+- include: byobu.yml
+  tags: [ zsh, byobu ]
+  when: byobu_install
+
 - name: Reset antigen cache
   command: "/bin/zsh -c 'source {{ zsh_user_config }}; antigen reset'"
   become: yes
