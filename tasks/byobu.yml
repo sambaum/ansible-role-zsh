@@ -17,6 +17,14 @@
     vtype: boolean
   when: byobu_launch_by_default
 
+- name: Create ~/.byobu/ directory
+  become: yes
+  become_user: "{{ zsh_user }}"
+  file:
+    path: "~/.byobu/"
+    state: directory
+    mode: '0755'
+
 - name: configure tmux.conf
   become: yes
   become_user: "{{ zsh_user }}"
