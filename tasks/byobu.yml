@@ -6,6 +6,7 @@
     state: present
   with_items:
     - byobu
+    - debconf
 
 - name: configure byobu launch-by-default
   become: yes
