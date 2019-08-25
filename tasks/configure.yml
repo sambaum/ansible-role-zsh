@@ -57,3 +57,11 @@
     dest: /etc/zsh/zshenv
     state: present
   when: ansible_distribution == 'Ubuntu'
+
+- name: Write .p10k.zsh config
+  copy:
+    src: "{{ zsh_file_p10k }}" 
+    dest: "{{ zsh_user_config_p10k }}"
+    owner: "{{ zsh_user }}"
+    group: "{{ zsh_user_group }}"
+    backup: yes
