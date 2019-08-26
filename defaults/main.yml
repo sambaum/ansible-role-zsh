@@ -173,7 +173,7 @@ zsh_powerlevel9k_command_execution_time_background: "248"
 zsh_template_zshrc: zshrc.j2
 
 #files
-zsh_file_p10k: p10k.zsh.j2
+zsh_file_p10k: p10k.zsh
 
 # individual lines
 zshrc_individual_lines: []
