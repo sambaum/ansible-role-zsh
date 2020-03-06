@@ -1,9 +1,18 @@
 [![Build Status](https://travis-ci.org/viasite-ansible/ansible-role-zsh.svg?branch=master)](https://travis-ci.org/viasite-ansible/ansible-role-zsh)
 
-Tested on Debian 6, Ubuntu 14.04, Ubuntu 16.04, macOS 10.12, CentOS 7.
+Tested on Debian 8, Ubuntu 14.04, Ubuntu 16.04, Ubuntu 18.04, macOS 10.12, CentOS 7.
 
 **For upgrade from viasite-ansible.zsh 1.x, 2.x to 3.0 see [below](#upgrade).**
 
+
+
+## Zero-knowledge install:
+If you using Ubuntu or Debian and not familiar with Ansible, you can just execute [install.sh](install.sh) on target machine:
+```
+curl https://raw.githubusercontent.com/viasite-ansible/ansible-role-zsh/master/install.sh | bash
+```
+It will install zsh for root and current user.
+Then [configure terminal application](#configure-terminal-application).
 
 
 ## Includes:
@@ -131,6 +140,29 @@ Note: I don't use `tmux-fzf` and don't tested work of it.
 
 
 
+## Multiuser shared install
+If you have 10+ users on host, probably you don't want manage tens of configurations and thousands of files.
+
+In this case you can deploy single zsh config and include it to all users.
+
+It causes some limitations:
+
+- Users have read only access to zsh config
+- Users cannot disable global enabled bundles
+- Possible bugs such cache write permission denied
+- Possible bugs with oh-my-zsh themes
+
+For install shared configuration you should set `zsh_shared: yes`.
+Configuration will install to `/usr/share/zsh-config`, then you just can include to user config:
+
+``` bash
+source /usr/share/zsh-config/.zshrc
+```
+
+You can still provision custom configs for several users.
+
+
+
 ## Upgrade
 viasite-ansible.zsh v3.0 introduces antigen v2.0, it don't have backward compatibility to antigen 1.x.
 
@@ -201,6 +233,18 @@ zsh_hotkeys_extras:
   - { hotkey: '^[,', action: copy-earlier-word } # ctrl+,
 ```
 
+### Aliases
+You can use aliases for your command with easy deploy.
+Aliases config mostly same as hotkeys config:
+
+``` yaml
+zsh_aliases:
+  - { alias: 'dfh', action: 'df -h | grep -v docker' }
+# with dependency of bundle and without replace default asiases
+- zsh_aliases_extra
+  - { alias: 'dfh', action: 'df -h | grep -v docker', bundle: }
+```
+
 #### Default hotkeys from plugins:
 - <kbd>&rarr;</kbd> - accept autosuggestion
 - <kbd>Ctrl+Z</kbd> - move current application to background, press again for return to foreground
@@ -246,7 +290,7 @@ Bundles `docker` and `docker-compose` will be added to config only if commands e
 ``` yaml
 # load only for zsh >= 4.3.17
 - name: zsh-users/zsh-syntax-highlighting
-  when: "{{ zsh_version | version_compare('4.3.17', '>=') }}"
+  when: "{{ zsh_version is version_compare('4.3.17', '>=') }}"
 # load only for macOS
 - { name: brew, when: "{{ ansible_os_family != 'Darwin' }}" }
 ```

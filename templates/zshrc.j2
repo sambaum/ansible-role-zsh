@@ -10,20 +10,25 @@
 
 export TERM="{{ zsh_term }}"
 export EDITOR="{{ zsh_editor }}"
-export PATH="{{ zsh_path | join(":") }}"
+export PATH="$PATH:{{ zsh_path | join(":") }}"
 
 HIST_STAMPS="{{ zsh_hist_stamps }}"
 UPDATE_ZSH_DAYS="{{ zsh_update_interval }}"
 COMPLETION_WAITING_DOTS="true"
 
-ANTIGEN_BUNDLES=$HOME/.antigen/bundles
-ANTIGEN_PLUGIN_UPDATE_DAYS={{ zsh_update_interval }}
-ANTIGEN_SYSTEM_UPDATE_DAYS={{ zsh_update_interval }}
+# ADOTDIR="{{ zsh_antigen_path_compat }}"
+{% if zsh_shared %}
+ANTIGEN_AUTO_CONFIG=false # disable updates
+_ANTIGEN_THEME_COMPAT=false # disable theme cache
+{% endif %}
+
+ANTIGEN_BUNDLES="{{ zsh_antigen_path_compat }}/bundles"
+ANTIGEN_PLUGIN_UPDATE_DAYS="{{ zsh_update_interval }}"
+ANTIGEN_SYSTEM_UPDATE_DAYS="{{ zsh_update_interval }}"
 
 {% if zsh_mc_solarized_skin %}export MC_SKIN="$HOME/.mc/lib/mc-solarized/solarized.ini"{% endif %}
 
-
-source {{ zsh_antigen_path }}/antigen/antigen.zsh
+source "{{ zsh_antigen_path_compat }}/antigen/antigen.zsh"
 
 antigen use oh-my-zsh
 
@@ -63,11 +68,7 @@ antigen bundle {{ bundle }}
 {% endif %}
 {% endfor %}
 
-{% if zsh_antigen_installed_version | version_compare(2.0, '>=') %}
 POWERLEVEL9K_INSTALLATION_PATH=$ANTIGEN_BUNDLES/bhilburn/powerlevel9k/powerlevel9k.zsh-theme
-{% elif zsh_version | version_compare('5.0.8', '<') %}
-POWERLEVEL9K_INSTALLATION_PATH={{ zsh_antigen_path }}/repos/https-COLON--SLASH--SLASH-github.com-SLASH-bhilburn-SLASH-powerlevel9k.git
-{% endif %}
 
 antigen theme {{ zsh_antigen_theme }}
 
@@ -90,12 +91,19 @@ bindkey '{{ hotkey.hotkey }}' {{ hotkey.action }}
 {% endif %}
 {% endfor %}
 
+# aliases
+{% for alias in zsh_aliases %}
+{% if alias.alias != '' and (alias.bundle is not defined or alias.bundle in bundles_enabled) %}
+alias '{{ alias.alias }}'="{{ alias.action }}"
+{% endif %}
+{% endfor %}
+
 # fzf
 export FZF_TMUX=0
 export FZF_DEFAULT_OPTS="{{ zsh_fzf_default_opts }}"
 
 # fzf-widgets: fzf-change-reset-dir
-{% if zsh_version | version_compare('5.0', '>=') -%}
+{% if zsh_version is version_compare('5.0', '>=') -%}
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
 {% endif %}
@@ -112,7 +120,7 @@ POWERLEVEL9K_STATUS_VERBOSE={{ zsh_powerlevel9k_status_verbose }}
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=({{ zsh_powerlevel9k_left_prompt | join(" ") }})
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=({{ zsh_powerlevel9k_right_prompt | join(" ") }})
-{% if zsh_powerlevel9k_hide_host_on_local %}DEFAULT_USER=$USER{% endif %}
+{% if zsh_powerlevel9k_hide_host_on_local and zsh_user != 'root' %}DEFAULT_USER=$USER{% endif %}
 
 POWERLEVEL9K_ALWAYS_SHOW_CONTEXT={{ zsh_powerlevel9k_always_show_context_bool }}
 POWERLEVEL9K_ALWAYS_SHOW_USER={{ zsh_powerlevel9k_always_show_user_bool }}
@@ -135,6 +143,8 @@ POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 
 POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND="{{ zsh_powerlevel9k_context_default_foreground }}"
 POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND="{{ zsh_powerlevel9k_context_default_background }}"
+POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND="{{ zsh_powerlevel9k_context_default_foreground }}"
+POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND="{{ zsh_powerlevel9k_context_default_background }}"
 POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND="{{ zsh_powerlevel9k_context_root_foreground }}"
 POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND="{{ zsh_powerlevel9k_context_root_background }}"
 
