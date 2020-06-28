@@ -21,6 +21,8 @@ zsh_path:
   - /usr/games
   - /usr/local/games
 
+zsh_load_etc_profile: yes
+
 fzf_widgets: ytet5uy4/fzf-widgets
 
 zsh_antigen_version: master
@@ -35,8 +37,10 @@ zsh_antigen_bundles:
   - git-extras
   - gnu-utils
   - { name: httpie, command: http }
-  - { name: go, command: go }
+  - { name: golang, command: go }
   - { name: gulp, command: gulp }
+  - { name: helm, command: helm }
+  - { name: kubectl, command: kubectl }
   - { name: pip, command: pip }
   - { name: rake, command: rake }
   - { name: symfony2, command: symfony }
@@ -66,6 +70,7 @@ zsh_antigen_bundles_extras: []
 
 # useful for deploy many zsh users at host, without duplicate and without write access
 zsh_shared: no
+zsh_change_user_shell: yes
 
 zsh_antigen_theme: "bhilburn/powerlevel9k powerlevel9k"
 
