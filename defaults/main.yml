@@ -2,6 +2,9 @@
 
 zsh_user: "{{ ansible_user_id }}"
 
+zsh_user_group_vars: []
+zsh_user_host_vars: []
+
 # .zshrc config
 zsh_hist_stamps: yyyy-mm-dd
 zsh_share_history: no

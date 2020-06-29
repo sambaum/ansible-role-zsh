@@ -1,0 +1,44 @@
+---
+
+- include: install.yml
+  tags: [ zsh, install ]
+  vars:
+    zsh_user: "{{ item }}"
+    zsh_user_group: "{{ item }}"
+  loop: "{{ zsh_user_host_vars + zsh_user_group_vars|flatten(levels=1) }}"
+
+- include: configure.yml
+  tags: [ zsh, configure ]
+  vars:
+    zsh_user: "{{ item }}"
+    zsh_user_group: "{{ item }}"
+  loop: "{{ zsh_user_host_vars + zsh_user_group_vars|flatten(levels=1) }}"
+
+- include: post-install.yml
+  tags: [ zsh, install, post_install ]
+  vars:
+    zsh_user: "{{ item }}"
+    zsh_user_group: "{{ item }}"
+  loop: "{{ zsh_user_host_vars + zsh_user_group_vars|flatten(levels=1) }}"
+
+- include: byobu.yml
+  tags: [ zsh, byobu ]
+  when: byobu_install
+  vars:
+    zsh_user: "{{ item }}"
+    zsh_user_group: "{{ item }}"
+  loop: "{{ zsh_user_host_vars + zsh_user_group_vars|flatten(levels=1) }}"
+
+- name: Reset antigen cache
+  command: "/bin/zsh -c 'source {{ zsh_config }}; antigen reset'"
+  become: yes
+  become_user: "{{ zsh_user }}"
+  changed_when: false
+  failed_when: false
+#  tags: always
+  poll: 10
+  async: 45
+  vars:
+    zsh_user: "{{ item }}"
+    zsh_user_group: "{{ item }}"
+  loop: "{{ zsh_user_host_vars + zsh_user_group_vars|flatten(levels=1) }}"
