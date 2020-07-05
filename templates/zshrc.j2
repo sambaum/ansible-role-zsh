@@ -91,6 +91,9 @@ bindkey '{{ hotkey.hotkey }}' {{ hotkey.action }}
 {% endif %}
 {% endfor %}
 
+# remove this default key map
+bindkey -r "^[l"
+
 # aliases
 {% for alias in zsh_aliases %}
 {% if alias.alias != '' and (alias.bundle is not defined or alias.bundle in bundles_enabled) %}
