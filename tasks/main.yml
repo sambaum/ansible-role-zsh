@@ -24,3 +24,4 @@
   async: 45
 
 - include: main2.yml
+  tags: [ zsh, install, configure, post_install ]
